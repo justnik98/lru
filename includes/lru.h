@@ -6,17 +6,20 @@
 #define LRU_LRU_H
 
 #include <cstddef>
-
+#include <list>
+#include <unordered_map>
 template<class T>
 class lru {
 private:
-    std::list<T> list;
-    std::unordered_map<T, typename std::list<T>::iterator, Hash, Equal> map;
+    std::list<T> list_;
+    std::unordered_map<T, typename std::list<T>::iterator> map_;
     std::size_t max_size;
 public:
     lru(const std::size_t &maxSize);
 
     bool has(const T &key);
+
+    bool put(const T &key);
 };
 
 template<class T>
@@ -24,29 +27,30 @@ lru<T>::lru(const std::size_t &maxSize):max_size(maxSize) {}
 
 template<class T>
 bool lru<T>::has(const T &key) {
-    auto it = map.find(key);
-    if (it == map.end()) return false;
+    auto it = map_.find(key);
+    if (it == map_.end()) return false;
 
     auto list_it = it->second;
-    list.erase(list_it);
-    it->second = list.insert(list.end(), key);
+    list_.erase(list_it);
+    it->second = list_.insert(list_.end(), key);
     return true;
 }
 
-bool put(const T &key) {
-    auto it = map.find(key);
-    if (it == map.end()) {
-        list.erase(it->second);
-        it->second = list.insert(list.end(), key);
+template<class T>
+bool lru<T>::put(const T &key) {
+    auto it = map_.find(key);
+    if (it != map_.end()) {
+        list_.erase(it->second);
+        it->second = list_.insert(list_.end(), key);
         return false;
     }
-    if (list.size() == max_size) {
-        T last = list.front();
-        list.popfront();
-        map.erase(last);
-        map[key] = list.isnert(list.end(), key);
+    if (list_.size() == max_size) {
+        T last = list_.front();
+        list_.pop_front();
+        map_.erase(last);
+        map_[key] = list_.insert(list_.end(), key);
     } else {
-        map[key] = list.insert(list.end(), key);
+        map_[key] = list_.insert(list_.end(), key);
     }
     return true;
 }
