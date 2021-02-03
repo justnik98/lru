@@ -33,5 +33,23 @@ bool lru<T>::has(const T &key) {
     return true;
 }
 
+bool put(const T &key) {
+    auto it = map.find(key);
+    if (it == map.end()) {
+        list.erase(it->second);
+        it->second = list.insert(list.end(), key);
+        return false;
+    }
+    if (list.size() == max_size) {
+        T last = list.front();
+        list.popfront();
+        map.erase(last);
+        map[key] = list.isnert(list.end(), key);
+    } else {
+        map[key] = list.insert(list.end(), key);
+    }
+    return true;
+}
+
 
 #endif //LRU_LRU_H
