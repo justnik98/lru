@@ -1,6 +1,7 @@
 #include <iostream>
-
+#include "src/lru.hpp"
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    lru<int> l(2);
+    l.put(3);
     return 0;
 }

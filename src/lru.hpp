@@ -25,7 +25,7 @@ public:
 template<class T>
 bool lru<T>::has(const T &key) {
     auto it = map_.find(key);
-    if (it == map.end()) {
+    if (it == map_.end()) {
         return false;
     }
     auto list_it = it->second;
@@ -36,7 +36,7 @@ bool lru<T>::has(const T &key) {
 template<class T>
 bool lru<T>::put(const T &key) {
     auto it = map_.find(key);
-    if (it != map.end()) {
+    if (it != map_.end()) {
         auto list_it = it->second;
         list_.erase(list_it);
         it->second = list_.insert(list_.end(), key);
@@ -46,12 +46,12 @@ bool lru<T>::put(const T &key) {
         T last = list_.front();
         auto node = map_.extract(last);
         list_.front() = key;
-        list_.splice(list_.end(), list_, list_.begin())
+        list_.splice(list_.end(), list_, list_.begin());
         node.key() = key;
         node.mapped() = --list_.end();
-        map.insert(std::move(node));
+        map_.insert(std::move(node));
     } else {
-        map_[key] = list_.insert(key);
+        map_[key] = list_.insert(list_.end(), key);
     }
 }
 
