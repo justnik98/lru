@@ -53,6 +53,7 @@ bool lru<T>::put(const T &key) {
     } else {
         map_[key] = list_.insert(list_.end(), key);
     }
+    return true;
 }
 
 
