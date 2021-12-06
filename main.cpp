@@ -10,8 +10,8 @@ using std::chrono::milliseconds;
 int main() {
     auto num = 100000000;
     lru_base<int> l1(num);
-    semi_intrusive:: lru<int> l2(num);
-    fully_intrusive:: lru<int> l3(num);
+    semi_intrusive::lru<int> l2(num);
+    fully_intrusive::lru<int> l3(num);
 
     cout << "insert into not full container" << endl;
     auto start = std::chrono::system_clock::now();
@@ -37,21 +37,21 @@ int main() {
 
     cout << "insert into full container" << endl;
     start = std::chrono::system_clock::now();
-    for (auto i = num; i < num*2; ++i) {
+    for (auto i = num; i < num * 2; ++i) {
         l1.put(num);
     }
     finish = std::chrono::system_clock::now();
 
     cout << std::chrono::duration_cast<milliseconds>(finish - start).count() << endl;
     start = std::chrono::system_clock::now();
-    for (auto i = num; i < num*2; ++i) {
+    for (auto i = num; i < num * 2; ++i) {
         l2.put(num);
     }
     finish = std::chrono::system_clock::now();
     cout << std::chrono::duration_cast<milliseconds>(finish - start).count() << endl;
 
     start = std::chrono::system_clock::now();
-    for (auto i = num; i < num*2; ++i) {
+    for (auto i = num; i < num * 2; ++i) {
         l3.put(num);
     }
     finish = std::chrono::system_clock::now();
