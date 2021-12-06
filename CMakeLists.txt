@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 20)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-add_executable(lru main.cpp src/lru.hpp)
+add_executable(lru main.cpp src/lru.hpp src/lru_base.hpp)
 target_link_libraries(lru PUBLIC ${CONAN_LIBS})
