@@ -8,9 +8,10 @@ using std::chrono::duration_cast;
 using std::chrono::milliseconds;
 
 int main() {
-    auto num = 1000000000;
+    auto num = 100000000;
     lru_base<int> l1(num);
-    lru<int> l2(num);
+    semi_intrusive:: lru<int> l2(num);
+    fully_intrusive:: lru<int> l3(num);
 
     cout << "insert into not full container" << endl;
     auto start = std::chrono::system_clock::now();
@@ -23,6 +24,13 @@ int main() {
     start = std::chrono::system_clock::now();
     for (auto i = 0; i < num; ++i) {
         l2.put(num);
+    }
+    finish = std::chrono::system_clock::now();
+    cout << std::chrono::duration_cast<milliseconds>(finish - start).count() << endl;
+
+    start = std::chrono::system_clock::now();
+    for (auto i = 0; i < num; ++i) {
+        l3.put(num);
     }
     finish = std::chrono::system_clock::now();
     cout << std::chrono::duration_cast<milliseconds>(finish - start).count() << endl;
@@ -42,6 +50,13 @@ int main() {
     finish = std::chrono::system_clock::now();
     cout << std::chrono::duration_cast<milliseconds>(finish - start).count() << endl;
 
+    start = std::chrono::system_clock::now();
+    for (auto i = num; i < num*2; ++i) {
+        l3.put(num);
+    }
+    finish = std::chrono::system_clock::now();
+    cout << std::chrono::duration_cast<milliseconds>(finish - start).count() << endl;
+
     cout << "update full container" << endl;
     start = std::chrono::system_clock::now();
     for (auto i = 0; i < num; ++i) {
@@ -53,6 +68,13 @@ int main() {
     start = std::chrono::system_clock::now();
     for (auto i = 0; i < num; ++i) {
         l2.has(num);
+    }
+    finish = std::chrono::system_clock::now();
+    cout << std::chrono::duration_cast<milliseconds>(finish - start).count() << endl;
+
+    start = std::chrono::system_clock::now();
+    for (auto i = 0; i < num; ++i) {
+        l3.has(num);
     }
     finish = std::chrono::system_clock::now();
     cout << std::chrono::duration_cast<milliseconds>(finish - start).count() << endl;
